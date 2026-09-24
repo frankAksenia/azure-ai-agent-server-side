@@ -13,7 +13,7 @@ class ContentSafetyService:
 
         if not endpoint:
             raise ValueError(
-                "CONTENT_SAFETY_ENDPOINT and CONTENT_SAFETY_KEY must be set in the environment."
+                "CONTENT_SAFETY_ENDPOINT must be set in the environment."
             )
 
         self.client = ContentSafetyClient(
