@@ -3,23 +3,22 @@ from typing import Any
 
 from azure.ai.contentsafety import ContentSafetyClient
 from azure.ai.contentsafety.models import AnalyzeTextOptions
-from azure.core.credentials import AzureKeyCredential
+from clients.foundry import get_credential
 
 
 class ContentSafetyService:
 
     def __init__(self):
         endpoint = os.getenv("CONTENT_SAFETY_ENDPOINT")
-        key = os.getenv("CONTENT_SAFETY_KEY")
 
-        if not endpoint or not key:
+        if not endpoint:
             raise ValueError(
                 "CONTENT_SAFETY_ENDPOINT and CONTENT_SAFETY_KEY must be set in the environment."
             )
 
         self.client = ContentSafetyClient(
             endpoint=endpoint,
-            credential=AzureKeyCredential(key),
+            credential=get_credential(),
         )
 
     def analyze_text(self, text: str):

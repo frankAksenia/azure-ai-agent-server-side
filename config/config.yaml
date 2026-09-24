@@ -2,22 +2,25 @@ manager_agent:
   name: "manager-agent"
   description: "An agent that manages and coordinates tasks."
   model: "gpt-5.1"
+  temperature: 0.3
 
 billing_agent:
   name: "billing-agent"
   description: "An agent that handles billing-related tasks."
   model: "gpt-5.1"
-  temperature: 0.7
+  temperature: 0.5
 
 technical_agent:
   name: "technical-agent"
   description: "An agent that handles technical support tasks."
   model: "gpt-5.1"
+  temperature: 0.5
 
 support_agent:
   name: "support-agent"
   description: "An agent that provides customer support."
   model: "gpt-5.1"
+  temperature: 0.5
 
 
 
