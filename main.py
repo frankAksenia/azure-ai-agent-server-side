@@ -1,14 +1,20 @@
 import os
 import asyncio
-from clients.foundry import create_credential, create_project_client
+from clients.foundry import  create_project_client, get_credential
 from config.settings import get_config
 from agents.deployment.factory import deploy_agents
 from agents.runtime.factory import create_agents
 from orchestration.magentic_workflow import create_workflow
 from services.content_safety_service import get_content_safety_service
 
+from dotenv import load_dotenv
+load_dotenv()
 
-async def run_workflow(agent):
+
+async def run_workflow(workflow_agent):
+
+    session = workflow_agent.create_session()
+
     try:
         content_safety = get_content_safety_service()
     except ValueError:
@@ -26,7 +32,7 @@ async def run_workflow(agent):
                 print("Your message was blocked by Content Safety filters.")
                 continue
 
-        result = await agent.run(user_input)
+        result = await workflow_agent.run(messages=user_input, session=session, stream=False)
         final_text = getattr(result, "text", str(result))
 
         if content_safety:
@@ -43,7 +49,7 @@ def main():
     if not project_endpoint:
         raise RuntimeError("AZURE_PROJECT_ENDPOINT is not set")
 
-    credential = create_credential()
+    credential = get_credential()
     project_client = create_project_client()
 
     with project_client:
@@ -55,8 +61,9 @@ def main():
         config=config,
     )
 
-    workflow = create_workflow(agents)
-    asyncio.run(run_workflow(workflow))
+    workflow_agent = create_workflow(agents)
+
+    asyncio.run(run_workflow(workflow_agent))
 
 if __name__ == "__main__":
     main()

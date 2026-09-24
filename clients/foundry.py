@@ -1,27 +1,26 @@
 
 import os
 
-from azure.identity import DefaultAzureCredential
 from azure.ai.projects import AIProjectClient
+from azure.identity import DefaultAzureCredential
 
-def create_credential():
-    """
-    Creates and returns an instance of DefaultAzureCredential.
-    """
-    return DefaultAzureCredential()
+
+credential = DefaultAzureCredential()
+
+
+def get_credential():
+    """Return the shared Azure credential used across this application."""
+    return credential
+
 
 def create_project_client():
-    """
-    Creates and returns an instance of AIProjectClient using the DefaultAzureCredential.
-    """
+    """Create an AIProjectClient using the shared credential."""
     project_endpoint = os.environ.get("AZURE_PROJECT_ENDPOINT")
 
     assert project_endpoint, "AZURE_PROJECT_ENDPOINT environment variable is not set."
 
-    credential = create_credential()
-    project_client = AIProjectClient(
+    return AIProjectClient(
         endpoint=project_endpoint,
         credential=credential,
     )
-    return project_client
 
