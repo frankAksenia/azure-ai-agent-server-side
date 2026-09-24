@@ -1,15 +1,13 @@
 import logging
 
-from agent_framework.foundry import FoundryAgent
 from azure.ai.projects.models import PromptAgentDefinition
-from agents import billing_agent
-from prompts.billing import build_system_prompt
+from prompts.manager import build_system_prompt
 from azure.core.exceptions import HttpResponseError
 
 
 logger = logging.getLogger(__name__)
 
-def create_manager_agent(project_client, config, tools):
+def deploy_manager_agent(project_client, config, tools):
     """
     Create a manager agent that handles managerial tasks.
     """

@@ -7,7 +7,7 @@ from azure.core.exceptions import HttpResponseError
 
 logger = logging.getLogger(__name__)
 
-def create_billing_agent(project_client, config, tools):
+def deploy_billing_agent(project_client, config, tools):
     """
     Create a billing agent that handles billing-related tasks.
     """
