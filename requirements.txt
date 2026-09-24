@@ -2,5 +2,6 @@ pyyaml
 azure-identity
 azure-ai-projects
 azure-core
+azure-ai-contentsafety
 agent-framework
 agent-framework-foundry
