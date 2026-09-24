@@ -3,6 +3,7 @@ import logging
 from azure.ai.projects.models import PromptAgentDefinition
 from prompts.technical import build_system_prompt
 from azure.core.exceptions import HttpResponseError
+from data.knowledge_base import build_knowledge_context
 
 
 logger = logging.getLogger(__name__)
@@ -12,9 +13,10 @@ def deploy_technical_agent(project_client, config, tools):
     Create a technical agent that handles technical support tasks.
     """
 
+    knowledge_context = build_knowledge_context("technical")
     system_prompt = build_system_prompt(
         include_tool_rules=False,
-        additional_instructions=None
+        additional_instructions=[knowledge_context] if knowledge_context else None,
         )
 
     try:

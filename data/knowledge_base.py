@@ -25,6 +25,24 @@ def load_agent_documents():
     return documents
 
 
+def build_knowledge_context(agent_name: str) -> str:
+    """Return local document context in a format that can be added to an agent prompt."""
+    docs = load_agent_documents().get(agent_name, [])
+    if not docs:
+        return ""
+
+    sections = [
+        f"[LOCAL KNOWLEDGE BASE: {agent_name.upper()}]",
+        "Use the following material as your working reference for this domain.",
+        "Answer using these facts and policies. Do not invent details that are not in the provided documents.",
+    ]
+
+    for doc in docs:
+        sections.append(f"--- {doc['name']} ---\n{doc['text'].strip()}")
+
+    return "\n\n".join(sections)
+
+
 if __name__ == "__main__":
     docs = load_agent_documents()
     for agent, entries in docs.items():
