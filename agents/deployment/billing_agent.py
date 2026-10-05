@@ -4,6 +4,7 @@ from azure.ai.projects.models import PromptAgentDefinition
 from prompts.billing import build_system_prompt
 from azure.core.exceptions import HttpResponseError
 from data.knowledge_base import build_knowledge_context
+from tools.billing_tools import create_billing_tool_definitions
 
 
 logger = logging.getLogger(__name__)
@@ -15,7 +16,7 @@ def deploy_billing_agent(project_client, config, tools):
 
     knowledge_context = build_knowledge_context("billing")
     system_prompt = build_system_prompt(
-        include_tool_rules=False,
+        include_tool_rules=True,
         additional_instructions=[knowledge_context] if knowledge_context else None,
         )
 
@@ -27,10 +28,11 @@ def deploy_billing_agent(project_client, config, tools):
             definition=PromptAgentDefinition(
                 model=config["billing_agent"]["model"],
                 instructions=system_prompt,
+                tools=create_billing_tool_definitions(),
                 temperature=config["billing_agent"]["temperature"],
                 )
             )
-        logger.info("Billing Agent created successfully with ID: %s", billing_agent.id)
+        logger.info("Billing Agent returned: name=%s version=%s id=%s", billing_agent.name, billing_agent.version, billing_agent.id)
         return billing_agent
     except HttpResponseError as e:
         logger.error("Failed to create Billing Agent: %s", e)

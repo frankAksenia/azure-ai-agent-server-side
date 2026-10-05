@@ -6,21 +6,34 @@ manager_agent:
 
 billing_agent:
   name: "billing-agent"
-  description: "An agent that handles billing-related tasks."
+  description: >-
+    Billing policy and customer-scoped invoice history and detail lookups.
+    Owns invoice-related support-ticket proposals and existing ticket-status
+    lookups, including requests to open or create a support ticket.
+    Status lookup needs a ticket ID; a new proposal needs an owned invoice
+    and a specific issue. Proposals await application confirmation; actual
+    creation and proposal cancellation belong to the CLI. Cannot issue
+    refunds, modify invoices, or cancel an already-created ticket.
   model: "gpt-5.1"
   temperature: 0.5
 
 technical_agent:
   name: "technical-agent"
-  description: "An agent that handles technical support tasks."
+  description: >-
+    Technical troubleshooting, API latency analysis, and incident-triage
+    guidance based on documented policies. No record-lookup or action tools.
   model: "gpt-5.1"
   temperature: 0.5
 
 support_agent:
   name: "support-agent"
-  description: "An agent that provides customer support."
+  description: >-
+    General customer experience and account-access guidance based on
+    documented policies. No invoice or ticket-management tools. Ticket
+    proposals and status lookups belong to the specialist whose description
+    declares those capabilities. Cannot authenticate a customer or act on
+    application confirmation.
   model: "gpt-5.1"
   temperature: 0.5
-
 
 

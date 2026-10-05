@@ -30,7 +30,7 @@ def deploy_support_agent(project_client, config, tools):
                 temperature=config["support_agent"]["temperature"],
                 )
             )
-        logger.info("Support Agent created successfully with ID: %s", support_agent.id)
+        logger.info("Support Agent returned: name=%s version=%s id=%s", support_agent.name, support_agent.version, support_agent.id)
         return support_agent
     except HttpResponseError as e:
         logger.error("Failed to create Support Agent: %s", e)

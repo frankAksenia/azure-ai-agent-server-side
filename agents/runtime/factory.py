@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from storage.database import DEFAULT_DATABASE_PATH
 
 from agent_framework.foundry import FoundryAgent
 
@@ -16,7 +17,7 @@ class SpecialistAgents:
     manager_agent: FoundryAgent
 
 
-def create_agents(project_endpoint, credential, config):
+def create_agents(project_endpoint, credential, config, customer_id, session_id, database_path = DEFAULT_DATABASE_PATH):
 
     return SpecialistAgents(
         support_agent=create_support_agent(
@@ -28,6 +29,9 @@ def create_agents(project_endpoint, credential, config):
             project_endpoint,
             credential,
             config,
+            customer_id=customer_id,
+            session_id=session_id,
+            database_path=database_path,
         ),
         technical_agent=create_technical_agent(
             project_endpoint,

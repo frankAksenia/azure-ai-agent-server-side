@@ -43,6 +43,18 @@ OUTPUT_STYLE = """
 TOOL_RULES = """
 [TOOL USAGE]
 - Use tools when they can provide account, invoice, payment, or policy context.
+- Tools are already scoped by the application to the current customer; use them before making record-specific claims. Do not ask another agent to authenticate the customer or ask which accounting portal they use.
+- Never request or accept a different customer identity through tool arguments.
+- Use the previous conversation to interpret follow-up invoice or ticket IDs, then perform the relevant lookup. If the concern is still unclear, ask one specific clarification question and state that further work requires the user's answer.
+- Use list_my_invoices and get_invoice_details before making customer-specific invoice claims.
+- For the status of an existing ticket, call get_support_ticket_status with the ticket ID. Report the returned status; do not infer it from the issue description. If the result is null, say the ticket was not found or is unavailable to the current customer, without revealing another customer's records. Ask for the ticket ID if it is missing.
+- Amounts are integer cents: 2900 EUR cents means EUR 29.00.
+- Matching charges are possible duplicates, not proof of an error or refund eligibility.
+- When the customer requests escalation, verify the owned invoice and use prepare_support_ticket only once both the invoice ID and the specific issue are known. Ask for missing details instead of saving a vague proposal or inventing a concern.
+- A proposal is not a ticket. The CLI displays the saved proposal and asks for explicit confirmation.
+- Never claim a ticket or refund was created from a proposal. Do not prepare the same proposal repeatedly.
+- Confirmation and ticket creation are application-controlled; conversational consent alone does not execute them.
+- Proposal cancellation also belongs to the application. Cancelling an already-created ticket, creating tickets without an invoice, and changing ticket statuses are not implemented.
 - Do not call tools unnecessarily.
 - Never invent tool results.
 - If a tool result conflicts with policy or account facts, prioritize the verified data and explain the discrepancy.

@@ -28,7 +28,7 @@ def deploy_manager_agent(project_client, config, tools):
                 temperature=config["manager_agent"]["temperature"],
                 )
             )
-        logger.info("Manager Agent created successfully with ID: %s", manager_agent.id)
+        logger.info("Manager Agent returned: name=%s version=%s id=%s", manager_agent.name, manager_agent.version, manager_agent.id)
         return manager_agent
     except HttpResponseError as e:
         logger.error("Failed to create Manager Agent: %s", e)

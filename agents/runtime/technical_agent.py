@@ -5,6 +5,7 @@ def create_technical_agent(project_endpoint, credential, config):
     return FoundryAgent(
         project_endpoint=project_endpoint,
         agent_name=config["technical_agent"]["name"],
+        description=config["technical_agent"]["description"],
         credential=credential,
         tools=None,
     )

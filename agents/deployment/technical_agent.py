@@ -30,7 +30,7 @@ def deploy_technical_agent(project_client, config, tools):
                 temperature=config["technical_agent"]["temperature"],
                 )
             )
-        logger.info("Technical Agent created successfully with ID: %s", technical_agent.id)
+        logger.info("Technical Agent returned: name=%s version=%s id=%s", technical_agent.name, technical_agent.version, technical_agent.id)
         return technical_agent
     except HttpResponseError as e:
         logger.error("Failed to create Technical Agent: %s", e)
