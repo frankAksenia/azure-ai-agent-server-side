@@ -5,3 +5,6 @@ azure-core
 azure-ai-contentsafety
 agent-framework
 agent-framework-foundry
+fastapi
+uvicorn
+pydantic

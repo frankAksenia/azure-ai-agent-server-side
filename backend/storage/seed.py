@@ -3,7 +3,7 @@ import json
 import sqlite3
 from pathlib import Path
 
-from storage.database import DEFAULT_DATABASE_PATH, connect, initialize_database
+from backend.storage.database import DEFAULT_DATABASE_PATH, connect, initialize_database
 
 
 DEFAULT_DATA_PATH = Path(__file__).with_name('synthetic_data.json')

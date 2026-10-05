@@ -5,14 +5,14 @@ from uuid import uuid4
 
 from dotenv import load_dotenv
 
-from agents.runtime.factory import create_agents
-from clients.foundry import get_credential
-from config.settings import get_config
-from orchestration.magentic_workflow import create_workflow
-from services.content_safety_service import get_content_safety_service
-from services.conversation_service import ConversationService
-from services.ticket_confirmation import review_ticket_proposals
-from storage.database import DEFAULT_DATABASE_PATH, require_database
+from backend.agents.runtime.factory import create_agents
+from backend.clients.foundry import get_credential
+from backend.config.settings import get_config
+from backend.orchestration.magentic_workflow import create_workflow
+from backend.services.content_safety_service import get_content_safety_service
+from backend.services.conversation_service import ConversationService
+from backend.services.ticket_confirmation import review_ticket_proposals
+from backend.storage.database import DEFAULT_DATABASE_PATH, require_database
 
 
 async def run_workflow(specialist_agents, customer_id, session_id, database_path = DEFAULT_DATABASE_PATH):

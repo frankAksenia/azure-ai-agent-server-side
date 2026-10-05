@@ -1,7 +1,7 @@
 import logging
 
-from services.ticket_service import approve_and_create_ticket, list_pending_proposals, cancel_proposal
-from storage.database import DEFAULT_DATABASE_PATH
+from backend.services.ticket_service import approve_and_create_ticket, list_pending_proposals, cancel_proposal
+from backend.storage.database import DEFAULT_DATABASE_PATH
 
 
 logger = logging.getLogger(__name__)

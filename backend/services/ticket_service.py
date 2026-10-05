@@ -3,7 +3,7 @@ from pathlib import Path
 import sqlite3
 from uuid import uuid4
 
-from storage.database import DEFAULT_DATABASE_PATH, connect
+from backend.storage.database import DEFAULT_DATABASE_PATH, connect
 
 
 def get_ticket(customer_id, ticket_id, database_path = DEFAULT_DATABASE_PATH):

@@ -2,8 +2,8 @@ import logging
 
 from agent_framework.orchestrations import MagenticBuilder
 
-from agents.runtime.factory import SpecialistAgents
-from prompts.magentic import FINAL_ANSWER_PROMPT, PROGRESS_LEDGER_PROMPT
+from backend.agents.runtime.factory import SpecialistAgents
+from backend.prompts.magentic import FINAL_ANSWER_PROMPT, PROGRESS_LEDGER_PROMPT
 
 
 logger = logging.getLogger(__name__)

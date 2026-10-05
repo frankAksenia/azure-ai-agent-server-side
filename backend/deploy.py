@@ -5,9 +5,9 @@ import os
 
 from dotenv import load_dotenv
 
-from agents.deployment.factory import deploy_agents
-from clients.foundry import create_project_client
-from config.settings import get_config
+from backend.agents.deployment.factory import deploy_agents
+from backend.clients.foundry import create_project_client
+from backend.config.settings import get_config
 
 
 def main():

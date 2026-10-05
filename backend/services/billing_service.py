@@ -1,7 +1,7 @@
 from contextlib import closing
 from pathlib import Path
 
-from storage.database import DEFAULT_DATABASE_PATH, connect
+from backend.storage.database import DEFAULT_DATABASE_PATH, connect
 
 
 def list_invoices(customer_id, database_path = DEFAULT_DATABASE_PATH):
