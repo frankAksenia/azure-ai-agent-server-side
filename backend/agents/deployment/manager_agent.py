@@ -1,7 +1,7 @@
 import logging
 
 from azure.ai.projects.models import PromptAgentDefinition
-from backend.prompts.manager import build_system_prompt
+from prompts.manager import build_system_prompt
 from azure.core.exceptions import HttpResponseError
 
 

@@ -2,8 +2,8 @@ import logging
 
 from agent_framework.orchestrations import MagenticBuilder
 
-from backend.agents.runtime.factory import SpecialistAgents
-from backend.prompts.magentic import FINAL_ANSWER_PROMPT, PROGRESS_LEDGER_PROMPT
+from agents.runtime.factory import SpecialistAgents
+from prompts.magentic import FINAL_ANSWER_PROMPT, PROGRESS_LEDGER_PROMPT
 
 
 logger = logging.getLogger(__name__)
@@ -33,8 +33,6 @@ def create_workflow(specialist_agents: SpecialistAgents):
         ],
     ).build()
 
-    workflow_agent = workflow.as_agent(name="Magentic Workflow", description="A multi-agent orchestration workflow for handling complex tasks.")
-
     logger.info("Magentic workflow created successfully.")
 
-    return workflow_agent
+    return workflow

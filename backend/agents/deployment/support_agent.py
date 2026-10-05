@@ -1,9 +1,9 @@
 import logging
 
 from azure.ai.projects.models import PromptAgentDefinition
-from backend.prompts.support import build_system_prompt
+from prompts.support import build_system_prompt
 from azure.core.exceptions import HttpResponseError
-from backend.data.knowledge_base import build_knowledge_context
+from data.knowledge_base import build_knowledge_context
 
 
 logger = logging.getLogger(__name__)

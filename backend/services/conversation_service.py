@@ -2,7 +2,6 @@ from agent_framework import AgentSession, InMemoryHistoryProvider, Message
 
 
 class ConversationService:
-
     def __init__(self):
         self.session = AgentSession()
 
@@ -12,16 +11,11 @@ class ConversationService:
         )
 
     def get_history(self):
-
-        provider_state = self.session.state.get(
-            "conversation_history",
-            {},
-        )
+        provider_state = self.session.state.get("conversation_history", {},)
 
         return provider_state.get("messages", [])
 
     def build_task(self, user_input):
-
         history = self.get_history()
 
         if not history:
@@ -49,8 +43,7 @@ class ConversationService:
         )
 
     async def add_turn(self, user_input, assistant_output):
-
-        provider_state = self.session.state.setdefault("conversation_history", {})
+        provider_state = self.session.state.setdefault("conversation_history", {},)
 
         messages = provider_state.setdefault("messages", [])
 

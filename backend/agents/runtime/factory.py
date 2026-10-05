@@ -1,12 +1,12 @@
 from dataclasses import dataclass
-from backend.storage.database import DEFAULT_DATABASE_PATH
+from storage.database import DEFAULT_DATABASE_PATH
 
 from agent_framework.foundry import FoundryAgent
 
-from backend.agents.runtime.billing_agent import create_billing_agent
-from backend.agents.runtime.manager_agent import create_manager_agent
-from backend.agents.runtime.support_agent import create_support_agent
-from backend.agents.runtime.technical_agent import create_technical_agent
+from agents.runtime.billing_agent import create_billing_agent
+from agents.runtime.manager_agent import create_manager_agent
+from agents.runtime.support_agent import create_support_agent
+from agents.runtime.technical_agent import create_technical_agent
 
 
 @dataclass

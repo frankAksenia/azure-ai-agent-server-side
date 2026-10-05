@@ -3,7 +3,7 @@ from typing import Any
 
 from azure.ai.contentsafety import ContentSafetyClient
 from azure.ai.contentsafety.models import AnalyzeTextOptions
-from backend.clients.foundry import get_credential
+from clients.foundry import get_credential
 
 
 class ContentSafetyService:

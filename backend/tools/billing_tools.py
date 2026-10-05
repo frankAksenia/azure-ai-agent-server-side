@@ -5,9 +5,9 @@ from agent_framework import tool
 from azure.ai.projects.models import FunctionTool as FoundryFunctionTool
 
 
-from backend.services.billing_service import get_invoice, list_invoices
-from backend.services.ticket_service import get_ticket, prepare_ticket
-from backend.storage.database import DEFAULT_DATABASE_PATH
+from services.billing_service import get_invoice, list_invoices
+from services.ticket_service import get_ticket, prepare_ticket
+from storage.database import DEFAULT_DATABASE_PATH
 
 
 logger = logging.getLogger(__name__)

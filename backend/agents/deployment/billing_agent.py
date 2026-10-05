@@ -1,10 +1,10 @@
 import logging
 
 from azure.ai.projects.models import PromptAgentDefinition
-from backend.prompts.billing import build_system_prompt
+from prompts.billing import build_system_prompt
 from azure.core.exceptions import HttpResponseError
-from backend.data.knowledge_base import build_knowledge_context
-from backend.tools.billing_tools import create_billing_tool_definitions
+from data.knowledge_base import build_knowledge_context
+from tools.billing_tools import create_billing_tool_definitions
 
 
 logger = logging.getLogger(__name__)
