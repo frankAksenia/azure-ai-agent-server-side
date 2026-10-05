@@ -1,0 +1,582 @@
+{
+  "customers": [
+    {
+      "id": "CUS-001",
+      "name": "Alex Morgan"
+    },
+    {
+      "id": "CUS-002",
+      "name": "Sam Rivera"
+    },
+    {
+      "id": "CUS-003",
+      "name": "Jordan Chen"
+    },
+    {
+      "id": "CUS-004",
+      "name": "Taylor Brooks"
+    },
+    {
+      "id": "CUS-005",
+      "name": "Casey Patel"
+    },
+    {
+      "id": "CUS-006",
+      "name": "Riley Chen"
+    },
+    {
+      "id": "CUS-007",
+      "name": "Morgan Diaz"
+    },
+    {
+      "id": "CUS-008",
+      "name": "Jamie Novak"
+    },
+    {
+      "id": "CUS-009",
+      "name": "Avery Kim"
+    },
+    {
+      "id": "CUS-010",
+      "name": "Quinn Silva"
+    }
+  ],
+  "invoices": [
+    {
+      "id": "INV-1001",
+      "customer_id": "CUS-001",
+      "subscription_id": "SUB-001",
+      "billing_period": "2026-09",
+      "amount_cents": 2900,
+      "currency": "EUR",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-1002",
+      "customer_id": "CUS-001",
+      "subscription_id": "SUB-001",
+      "billing_period": "2026-10",
+      "amount_cents": 2900,
+      "currency": "EUR",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-1003",
+      "customer_id": "CUS-001",
+      "subscription_id": "SUB-001",
+      "billing_period": "2026-10",
+      "amount_cents": 2900,
+      "currency": "EUR",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-2001",
+      "customer_id": "CUS-002",
+      "subscription_id": "SUB-002",
+      "billing_period": "2026-09",
+      "amount_cents": 4900,
+      "currency": "EUR",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-2002",
+      "customer_id": "CUS-002",
+      "subscription_id": "SUB-002",
+      "billing_period": "2026-10",
+      "amount_cents": 4900,
+      "currency": "EUR",
+      "payment_status": "unpaid"
+    },
+    {
+      "id": "INV-3001",
+      "customer_id": "CUS-003",
+      "subscription_id": "SUB-003",
+      "billing_period": "2026-09",
+      "amount_cents": 9900,
+      "currency": "EUR",
+      "payment_status": "refunded"
+    },
+    {
+      "id": "INV-3002",
+      "customer_id": "CUS-003",
+      "subscription_id": "SUB-003",
+      "billing_period": "2026-10",
+      "amount_cents": 9900,
+      "currency": "EUR",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-1004",
+      "customer_id": "CUS-001",
+      "subscription_id": "SUB-001",
+      "billing_period": "2026-07",
+      "amount_cents": 2900,
+      "currency": "EUR",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-1005",
+      "customer_id": "CUS-001",
+      "subscription_id": "SUB-001",
+      "billing_period": "2026-08",
+      "amount_cents": 2900,
+      "currency": "EUR",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-2003",
+      "customer_id": "CUS-002",
+      "subscription_id": "SUB-002",
+      "billing_period": "2026-06",
+      "amount_cents": 4900,
+      "currency": "EUR",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-2004",
+      "customer_id": "CUS-002",
+      "subscription_id": "SUB-002",
+      "billing_period": "2026-07",
+      "amount_cents": 4900,
+      "currency": "EUR",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-2005",
+      "customer_id": "CUS-002",
+      "subscription_id": "SUB-002",
+      "billing_period": "2026-08",
+      "amount_cents": 4900,
+      "currency": "EUR",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-3003",
+      "customer_id": "CUS-003",
+      "subscription_id": "SUB-003",
+      "billing_period": "2026-06",
+      "amount_cents": 9900,
+      "currency": "EUR",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-3004",
+      "customer_id": "CUS-003",
+      "subscription_id": "SUB-003",
+      "billing_period": "2026-07",
+      "amount_cents": 9900,
+      "currency": "EUR",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-3005",
+      "customer_id": "CUS-003",
+      "subscription_id": "SUB-003",
+      "billing_period": "2026-08",
+      "amount_cents": 9900,
+      "currency": "EUR",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-4001",
+      "customer_id": "CUS-004",
+      "subscription_id": "SUB-004",
+      "billing_period": "2026-06",
+      "amount_cents": 5900,
+      "currency": "EUR",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-4002",
+      "customer_id": "CUS-004",
+      "subscription_id": "SUB-004",
+      "billing_period": "2026-07",
+      "amount_cents": 5900,
+      "currency": "EUR",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-4003",
+      "customer_id": "CUS-004",
+      "subscription_id": "SUB-004",
+      "billing_period": "2026-08",
+      "amount_cents": 5900,
+      "currency": "EUR",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-4004",
+      "customer_id": "CUS-004",
+      "subscription_id": "SUB-004",
+      "billing_period": "2026-09",
+      "amount_cents": 5900,
+      "currency": "EUR",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-4005",
+      "customer_id": "CUS-004",
+      "subscription_id": "SUB-004",
+      "billing_period": "2026-10",
+      "amount_cents": 5900,
+      "currency": "EUR",
+      "payment_status": "unpaid"
+    },
+    {
+      "id": "INV-5001",
+      "customer_id": "CUS-005",
+      "subscription_id": "SUB-005",
+      "billing_period": "2026-06",
+      "amount_cents": 6900,
+      "currency": "EUR",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-5002",
+      "customer_id": "CUS-005",
+      "subscription_id": "SUB-005",
+      "billing_period": "2026-07",
+      "amount_cents": 6900,
+      "currency": "EUR",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-5003",
+      "customer_id": "CUS-005",
+      "subscription_id": "SUB-005",
+      "billing_period": "2026-08",
+      "amount_cents": 6900,
+      "currency": "EUR",
+      "payment_status": "refunded"
+    },
+    {
+      "id": "INV-5004",
+      "customer_id": "CUS-005",
+      "subscription_id": "SUB-005",
+      "billing_period": "2026-09",
+      "amount_cents": 6900,
+      "currency": "EUR",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-5005",
+      "customer_id": "CUS-005",
+      "subscription_id": "SUB-005",
+      "billing_period": "2026-10",
+      "amount_cents": 6900,
+      "currency": "EUR",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-6001",
+      "customer_id": "CUS-006",
+      "subscription_id": "SUB-006",
+      "billing_period": "2026-06",
+      "amount_cents": 7900,
+      "currency": "EUR",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-6002",
+      "customer_id": "CUS-006",
+      "subscription_id": "SUB-006",
+      "billing_period": "2026-07",
+      "amount_cents": 7900,
+      "currency": "EUR",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-6003",
+      "customer_id": "CUS-006",
+      "subscription_id": "SUB-006",
+      "billing_period": "2026-08",
+      "amount_cents": 7900,
+      "currency": "EUR",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-6004",
+      "customer_id": "CUS-006",
+      "subscription_id": "SUB-006",
+      "billing_period": "2026-09",
+      "amount_cents": 7900,
+      "currency": "EUR",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-6005",
+      "customer_id": "CUS-006",
+      "subscription_id": "SUB-006",
+      "billing_period": "2026-10",
+      "amount_cents": 7900,
+      "currency": "EUR",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-7001",
+      "customer_id": "CUS-007",
+      "subscription_id": "SUB-007",
+      "billing_period": "2026-06",
+      "amount_cents": 8900,
+      "currency": "USD",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-7002",
+      "customer_id": "CUS-007",
+      "subscription_id": "SUB-007",
+      "billing_period": "2026-07",
+      "amount_cents": 8900,
+      "currency": "USD",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-7003",
+      "customer_id": "CUS-007",
+      "subscription_id": "SUB-007",
+      "billing_period": "2026-08",
+      "amount_cents": 8900,
+      "currency": "USD",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-7004",
+      "customer_id": "CUS-007",
+      "subscription_id": "SUB-007",
+      "billing_period": "2026-09",
+      "amount_cents": 8900,
+      "currency": "USD",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-7005",
+      "customer_id": "CUS-007",
+      "subscription_id": "SUB-007",
+      "billing_period": "2026-10",
+      "amount_cents": 8900,
+      "currency": "USD",
+      "payment_status": "unpaid"
+    },
+    {
+      "id": "INV-8001",
+      "customer_id": "CUS-008",
+      "subscription_id": "SUB-008",
+      "billing_period": "2026-06",
+      "amount_cents": 9900,
+      "currency": "USD",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-8002",
+      "customer_id": "CUS-008",
+      "subscription_id": "SUB-008",
+      "billing_period": "2026-07",
+      "amount_cents": 9900,
+      "currency": "USD",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-8003",
+      "customer_id": "CUS-008",
+      "subscription_id": "SUB-008",
+      "billing_period": "2026-08",
+      "amount_cents": 9900,
+      "currency": "USD",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-8004",
+      "customer_id": "CUS-008",
+      "subscription_id": "SUB-008",
+      "billing_period": "2026-09",
+      "amount_cents": 9900,
+      "currency": "USD",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-8005",
+      "customer_id": "CUS-008",
+      "subscription_id": "SUB-008",
+      "billing_period": "2026-10",
+      "amount_cents": 9900,
+      "currency": "USD",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-9001",
+      "customer_id": "CUS-009",
+      "subscription_id": "SUB-009",
+      "billing_period": "2026-06",
+      "amount_cents": 10900,
+      "currency": "GBP",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-9002",
+      "customer_id": "CUS-009",
+      "subscription_id": "SUB-009",
+      "billing_period": "2026-07",
+      "amount_cents": 10900,
+      "currency": "GBP",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-9003",
+      "customer_id": "CUS-009",
+      "subscription_id": "SUB-009",
+      "billing_period": "2026-08",
+      "amount_cents": 10900,
+      "currency": "GBP",
+      "payment_status": "refunded"
+    },
+    {
+      "id": "INV-9004",
+      "customer_id": "CUS-009",
+      "subscription_id": "SUB-009",
+      "billing_period": "2026-09",
+      "amount_cents": 10900,
+      "currency": "GBP",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-9005",
+      "customer_id": "CUS-009",
+      "subscription_id": "SUB-009",
+      "billing_period": "2026-10",
+      "amount_cents": 10900,
+      "currency": "GBP",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-10001",
+      "customer_id": "CUS-010",
+      "subscription_id": "SUB-010",
+      "billing_period": "2026-06",
+      "amount_cents": 11900,
+      "currency": "GBP",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-10002",
+      "customer_id": "CUS-010",
+      "subscription_id": "SUB-010",
+      "billing_period": "2026-07",
+      "amount_cents": 11900,
+      "currency": "GBP",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-10003",
+      "customer_id": "CUS-010",
+      "subscription_id": "SUB-010",
+      "billing_period": "2026-08",
+      "amount_cents": 11900,
+      "currency": "GBP",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-10004",
+      "customer_id": "CUS-010",
+      "subscription_id": "SUB-010",
+      "billing_period": "2026-09",
+      "amount_cents": 11900,
+      "currency": "GBP",
+      "payment_status": "paid"
+    },
+    {
+      "id": "INV-10005",
+      "customer_id": "CUS-010",
+      "subscription_id": "SUB-010",
+      "billing_period": "2026-10",
+      "amount_cents": 11900,
+      "currency": "GBP",
+      "payment_status": "paid"
+    }
+  ],
+  "support_tickets": [
+    {
+      "id": "TKT-3001",
+      "customer_id": "CUS-003",
+      "invoice_id": "INV-3001",
+      "issue": "Customer requested a review of the September charge; refund completed.",
+      "status": "closed"
+    },
+    {
+      "id": "TKT-3002",
+      "customer_id": "CUS-001",
+      "invoice_id": "INV-1002",
+      "issue": "Customer requested a review of the September charge; refund in progress.",
+      "status": "open"
+    },
+    {
+      "id": "TKT-1001",
+      "customer_id": "CUS-001",
+      "invoice_id": "INV-1003",
+      "issue": "Review possible duplicate October charge alongside INV-1002.",
+      "status": "in_progress"
+    },
+    {
+      "id": "TKT-2001",
+      "customer_id": "CUS-002",
+      "invoice_id": "INV-2002",
+      "issue": "Review an October payment that is still shown as unpaid.",
+      "status": "open"
+    },
+    {
+      "id": "TKT-3003",
+      "customer_id": "CUS-003",
+      "invoice_id": "INV-3002",
+      "issue": "Customer requested an October invoice copy; copy provided.",
+      "status": "closed"
+    },
+    {
+      "id": "TKT-4001",
+      "customer_id": "CUS-004",
+      "invoice_id": "INV-4005",
+      "issue": "Investigate a payment attempt on an unpaid invoice.",
+      "status": "open"
+    },
+    {
+      "id": "TKT-5001",
+      "customer_id": "CUS-005",
+      "invoice_id": "INV-5003",
+      "issue": "Customer requested a charge review; refund recorded.",
+      "status": "closed"
+    },
+    {
+      "id": "TKT-6001",
+      "customer_id": "CUS-006",
+      "invoice_id": "INV-6005",
+      "issue": "Clarify the subscription charge on the invoice.",
+      "status": "in_progress"
+    },
+    {
+      "id": "TKT-7001",
+      "customer_id": "CUS-007",
+      "invoice_id": "INV-7005",
+      "issue": "Investigate a payment attempt on an unpaid invoice.",
+      "status": "open"
+    },
+    {
+      "id": "TKT-8001",
+      "customer_id": "CUS-008",
+      "invoice_id": "INV-8005",
+      "issue": "Clarify the subscription charge on the invoice.",
+      "status": "in_progress"
+    },
+    {
+      "id": "TKT-9001",
+      "customer_id": "CUS-009",
+      "invoice_id": "INV-9003",
+      "issue": "Customer requested a charge review; refund recorded.",
+      "status": "closed"
+    },
+    {
+      "id": "TKT-10001",
+      "customer_id": "CUS-010",
+      "invoice_id": "INV-10005",
+      "issue": "Clarify the subscription charge on the invoice.",
+      "status": "in_progress"
+    }
+  ]
+}
