@@ -10,9 +10,6 @@ resource aiProject 'Microsoft.CognitiveServices/accounts/projects@2026-07-01' = 
   name: aiProjectName
   parent: aiFoundry
   location: location
-  identity: {
-    type: 'SystemAssigned'
-  }
   properties: {}
 }
 
