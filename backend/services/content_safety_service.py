@@ -1,35 +1,16 @@
-import os
-from typing import Any
-
-from azure.ai.contentsafety import ContentSafetyClient
 from azure.ai.contentsafety.models import AnalyzeTextOptions
-from clients.foundry import get_credential
+from clients.content_safety_client import create_content_safety_client
 
 
 class ContentSafetyService:
 
-    def __init__(self):
-        endpoint = os.getenv("CONTENT_SAFETY_ENDPOINT")
+    def __init__(self, credential):
+        self._client = create_content_safety_client(credential)
 
-        if not endpoint:
-            raise ValueError(
-                "CONTENT_SAFETY_ENDPOINT must be set in the environment."
-            )
-
-        self.client = ContentSafetyClient(
-            endpoint=endpoint,
-            credential=get_credential(),
-        )
+    def close(self):
+        self._client.close()
 
     def analyze_text(self, text: str):
-        """
-        Analyze text content and return a normalized result.
-
-        Returns a dictionary with:
-        - safe: bool
-        - categories: list[str]
-        - severity: dict[str, int]
-        """
         if not text or not text.strip():
             return {
                 "safe": True,
@@ -37,7 +18,7 @@ class ContentSafetyService:
                 "severity": {},
             }
 
-        response = self.client.analyze_text(AnalyzeTextOptions(text=text))
+        response = self._client.analyze_text(AnalyzeTextOptions(text=text))
 
         categories: list[str] = []
         severity: dict[str, int] = {}
@@ -58,5 +39,5 @@ class ContentSafetyService:
         }
 
 
-def get_content_safety_service() -> ContentSafetyService:
-    return ContentSafetyService()
+def get_content_safety_service(credential) -> ContentSafetyService:
+    return ContentSafetyService(credential)
