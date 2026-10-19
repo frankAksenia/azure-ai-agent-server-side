@@ -3,7 +3,7 @@ import logging
 from azure.ai.projects.models import PromptAgentDefinition
 from prompts.support import build_system_prompt
 from azure.core.exceptions import HttpResponseError
-from data.knowledge_base import build_knowledge_context
+from tools.knowledge_tools import create_knowledge_tool_definitions
 
 
 logger = logging.getLogger(__name__)
@@ -13,10 +13,8 @@ def deploy_support_agent(project_client, config, tools):
     Create a support agent that handles customer support tasks.
     """
 
-    knowledge_context = build_knowledge_context("support")
     system_prompt = build_system_prompt(
-        include_tool_rules=False,
-        additional_instructions=[knowledge_context] if knowledge_context else None,
+        include_tool_rules=True,
         )
 
     try:
@@ -27,6 +25,7 @@ def deploy_support_agent(project_client, config, tools):
             definition=PromptAgentDefinition(
                 model=config["support_agent"]["model"],
                 instructions=system_prompt,
+                tools=create_knowledge_tool_definitions("support"),
                 temperature=config["support_agent"]["temperature"],
                 )
             )
@@ -38,5 +37,3 @@ def deploy_support_agent(project_client, config, tools):
     except Exception as e:
         logger.error("An unexpected error occurred while creating Support Agent: %s", e)
         raise
-            
-    

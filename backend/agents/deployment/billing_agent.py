@@ -3,8 +3,8 @@ import logging
 from azure.ai.projects.models import PromptAgentDefinition
 from prompts.billing import build_system_prompt
 from azure.core.exceptions import HttpResponseError
-from data.knowledge_base import build_knowledge_context
 from tools.billing_tools import create_billing_tool_definitions
+from tools.knowledge_tools import create_knowledge_tool_definitions
 
 
 logger = logging.getLogger(__name__)
@@ -14,10 +14,8 @@ def deploy_billing_agent(project_client, config, tools):
     Create a billing agent that handles billing-related tasks.
     """
 
-    knowledge_context = build_knowledge_context("billing")
     system_prompt = build_system_prompt(
         include_tool_rules=True,
-        additional_instructions=[knowledge_context] if knowledge_context else None,
         )
 
     try:
@@ -28,7 +26,7 @@ def deploy_billing_agent(project_client, config, tools):
             definition=PromptAgentDefinition(
                 model=config["billing_agent"]["model"],
                 instructions=system_prompt,
-                tools=create_billing_tool_definitions(),
+                tools=[*create_billing_tool_definitions(), *create_knowledge_tool_definitions("billing")],
                 temperature=config["billing_agent"]["temperature"],
                 )
             )
@@ -40,5 +38,3 @@ def deploy_billing_agent(project_client, config, tools):
     except Exception as e:
         logger.error("An unexpected error occurred while creating Billing Agent: %s", e)
         raise
-            
-    
