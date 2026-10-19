@@ -1,10 +1,14 @@
 pyyaml
+python-dotenv
 azure-identity
 azure-ai-projects
 azure-core
 azure-ai-contentsafety
 agent-framework
 agent-framework-foundry
+agent-framework-orchestrations
 fastapi
 uvicorn
 pydantic
+azure-cosmos
+azure-ai-documentintelligence

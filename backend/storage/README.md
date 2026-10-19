@@ -2,17 +2,19 @@
 
 The editable records live in [synthetic_data.json](synthetic_data.json).
 Database population is a separate, local process. It requires no Azure access.
-`main.py` checks that the database is ready and never seeds or migrates it.
+FastAPI checks that the billing database is ready and never populates billing
+records automatically. Its conversation store creates its own history tables.
 
-From the repository root:
+From `backend`, with the virtual environment activated:
 
 ```bash
 python -m storage.seed
-python main.py
+python -m uvicorn main:app --reload
 ```
 
 The population command creates the schema, applies existing schema migrations,
-and inserts missing records into `storage/demo.sqlite3`. Repeating it preserves
+and inserts missing records into the configured SQLite database (default
+`storage/demo.sqlite3`). Repeating it preserves
 existing records, ticket status changes, proposals, and tickets created by users.
 It reports the number of newly inserted records. Editing an existing ID in JSON
 does not update that record in SQLite; add new IDs to extend an existing database,
@@ -24,8 +26,10 @@ To select a different dataset or database:
 python -m storage.seed --data storage/synthetic_data.json --database /tmp/demo.sqlite3
 ```
 
-The destination directory must exist. The chat uses `storage/demo.sqlite3`;
-`--database` changes the population destination only.
+The destination directory must exist. Both the seed command and the API honor
+`DATABASE_PATH` in the root `.env`; relative paths resolve from the repository
+root. An explicit `--database` overrides only the seed destination, so use the
+same path in `DATABASE_PATH` when starting the API.
 
 For Python callers, both paths are required:
 
@@ -69,13 +73,16 @@ database can contain additional user-created records.
 | --- | --- |
 | `customers` | Synthetic customer identities. |
 | `invoices` | Customer-owned invoices and their payment states. |
-| `ticket_proposals` | Pending, cancelled, or consumed proposals scoped to a customer and CLI session. |
+| `ticket_proposals` | Pending, cancelled, or consumed proposals scoped to a customer and conversation. |
 | `support_tickets` | Customer-owned tickets with an invoice reference and an optional unique proposal reference. |
+| `conversations` | Customer ownership and conversation timestamps. |
+| `conversation_messages` | Persistent user/assistant text, retaining the latest 20 complete turn pairs. |
 
 `require_database()` opens SQLite read-only and checks the four tables, the
-`support_tickets.proposal_id` column, and demo customer `CUS-001`. If these are
+`support_tickets.proposal_id` column, and the presence of customer records. If these are
 unavailable, startup instructs you to run `python -m storage.seed`. It does not
 create the file, migrate the schema, or insert records.
+Startup verifies that `DEMO_CUSTOMER_ID` exists.
 
 During explicit population, existing schemas gain proposal references and a
 unique index for retry-safe ticket creation. Older uncompleted `approved`
@@ -110,26 +117,29 @@ What is the status of ticket TKT-3002?
 Please propose a support ticket for INV-1003 about the possible duplicate charge.
 ```
 
-The model prepares a proposal; the CLI requests confirmation. `y` or `yes`
-creates the ticket, `n` or `no` or Enter cancels the proposal, and unrecognized
-input prompts again. Creation is transactional and retry-safe for the same
-proposal. A new CLI run gets a new session ID.
+The model prepares a pending proposal. The API returns it in `pending_proposals`
+so the frontend can ask for confirmation. A request to
+`POST /api/conversations/{conversation_id}/proposals/{proposal_id}/approve`
+creates its ticket; the corresponding `/cancel` endpoint cancels the proposal.
+Creation is transactional and retry-safe for the same proposal. Conversation
+IDs persist across API restarts and serve as the proposal's `session_id`.
 
 Billing owns invoice lookups, ticket proposals, and status lookup. The Support
 Agent has no ticket tools. Status lookup uses only the ticket ID and returns
 `id`, `invoice_id`, `issue`, and `status`; missing or foreign tickets return
 `None`. A proposal requires an owned invoice and a non-empty issue.
 
-Ticket creation changes the proposal to `consumed` and inserts an `open` ticket
-in one transaction. Retrying creation for the same proposal returns the existing
+Ticket creation changes the proposal to `consumed` and inserts an `open` ticket.
+Retrying creation for the same proposal returns the existing
 ticket. Cancelling a proposal changes its status to `cancelled`; cancellation of
 an already-created ticket is not implemented. Separate proposals for the same
-issue are not deduplicated. The CLI does not resume proposals from earlier
-session IDs. No refund or invoice modification is performed by these operations.
+issue are not deduplicated. The configured demo customer can list pending proposals
+for an owned conversation after restarting the API. No refund or invoice
+modification is performed by these operations.
 
 ## Inspect local data
 
-With the SQLite CLI installed, run these read-only queries from the repository root:
+With the SQLite CLI installed, run these read-only queries from `backend`:
 
 ```bash
 sqlite3 storage/demo.sqlite3 "SELECT id, invoice_id, status FROM support_tickets WHERE customer_id = 'CUS-001';"

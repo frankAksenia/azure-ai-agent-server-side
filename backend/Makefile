@@ -1,130 +1,74 @@
-# ==========================================================
-# Azure Infrastructure Makefile
-#
-# Common development commands for deploying and managing
-# Azure AI Foundry resources.
-# ==========================================================
+RESOURCE_GROUP ?= rg-seversideagent-dev
+LOCATION ?= swedencentral
+AI_FOUNDRY_NAME ?= fndry-seversideagent-dev
+INDEXER_PRINCIPAL_ID ?=
+RUNTIME_PRINCIPAL_ID ?=
+PYTHON ?= python
 
-
-# ----------------------------------------------------------
-# Configuration
-# ----------------------------------------------------------
-
-# Azure Resource Group
-RESOURCE_GROUP = rg-seversideagent-dev
-
-# Azure region
-LOCATION = swedencentral
-
-# Azure AI Foundry account name
-AI_FOUNDRY_NAME = fndry-seversideagent-dev
-
-# Main Bicep template
 TEMPLATE_FILE = infra/main.bicep
-
-# Azure deployment name
 DEPLOYMENT_NAME = foundry-resources-v2
 
+DEPLOY_PARAMETERS = aiFoundryName=$(AI_FOUNDRY_NAME) \
+	indexerPrincipalId='$(INDEXER_PRINCIPAL_ID)' \
+	runtimePrincipalId='$(RUNTIME_PRINCIPAL_ID)'
 
-# Declare targets that are not files
-.PHONY: group validate what-if deploy outputs cleanup deleted purge list
+.DEFAULT_GOAL := help
+.PHONY: help install seed rag-index agents-deploy serve test group what-if validate deploy outputs cleanup purge
 
+help:
+	@printf '%s\n' \
+		'Local workflow:' \
+		'  make install       Install Python dependencies.' \
+		'  make seed          Create or update the local demo database.' \
+		'  make rag-index     Index the PDF knowledge corpus.' \
+		'  make agents-deploy Publish Foundry agent versions.' \
+		'  make serve         Start the FastAPI server.' \
+		'  make test          Run tests.' \
+		'' \
+		'Azure infrastructure:' \
+		'  make what-if       Preview the Bicep deployment.' \
+		'  make validate      Validate the Bicep deployment.' \
+		'  make deploy        Create the resource group and deploy infrastructure.' \
+		'  make outputs       Show deployment outputs.' \
+		'  make cleanup       Delete the resource group and all its resources.' \
+		'  make purge         Permanently purge soft-deleted AI resources.'
 
-# ----------------------------------------------------------
-# Create the resource group if it does not already exist.
-# Azure simply returns the existing one when rerun.
-# ----------------------------------------------------------
+install:
+	$(PYTHON) -m pip install -r requirements.txt
+
+seed:
+	$(PYTHON) -m storage.seed
+
+rag-index:
+	$(PYTHON) -m rag.index_knowledge
+
+agents-deploy:
+	$(PYTHON) deploy.py
+
+serve:
+	$(PYTHON) -m uvicorn main:app --reload
+
+test:
+	$(PYTHON) -m unittest discover -s tests -v
+
 group:
-	az group create \
-		--name $(RESOURCE_GROUP) \
-		--location $(LOCATION)
+	az group create --name $(RESOURCE_GROUP) --location $(LOCATION)
 
-
-# ----------------------------------------------------------
-# Validate the Bicep template without deploying resources.
-# Useful for catching syntax or parameter errors.
-# ----------------------------------------------------------
-validate:
-	az deployment group validate \
-		--resource-group $(RESOURCE_GROUP) \
-		--template-file $(TEMPLATE_FILE) \
-		--parameters aiFoundryName=$(AI_FOUNDRY_NAME)
-
-
-# ----------------------------------------------------------
-# Preview infrastructure changes before deployment.
-# Similar to Terraform's "plan".
-# ----------------------------------------------------------
 what-if:
-	az deployment group what-if \
-		--resource-group $(RESOURCE_GROUP) \
-		--template-file $(TEMPLATE_FILE) \
-		--parameters aiFoundryName=$(AI_FOUNDRY_NAME)
+	az deployment group what-if --resource-group $(RESOURCE_GROUP) --template-file $(TEMPLATE_FILE) --parameters $(DEPLOY_PARAMETERS)
 
+validate:
+	az deployment group validate --resource-group $(RESOURCE_GROUP) --template-file $(TEMPLATE_FILE) --parameters $(DEPLOY_PARAMETERS)
 
-# ----------------------------------------------------------
-# Deploy Azure infrastructure.
-# Automatically creates the resource group first.
-# ----------------------------------------------------------
 deploy: group
-	az bicep upgrade
-	az deployment group create \
-		--name $(DEPLOYMENT_NAME) \
-		--resource-group $(RESOURCE_GROUP) \
-		--template-file $(TEMPLATE_FILE) \
-		--parameters aiFoundryName=$(AI_FOUNDRY_NAME)
+	az deployment group create --name $(DEPLOYMENT_NAME) --resource-group $(RESOURCE_GROUP) --template-file $(TEMPLATE_FILE) --parameters $(DEPLOY_PARAMETERS)
 
-
-# ----------------------------------------------------------
-# Show deployment outputs such as endpoints and deployment
-# names defined in the Bicep outputs.
-# ----------------------------------------------------------
 outputs:
-	az deployment group show \
-		--resource-group $(RESOURCE_GROUP) \
-		--name $(DEPLOYMENT_NAME) \
-		--query properties.outputs \
-		--output json
+	az deployment group show --resource-group $(RESOURCE_GROUP) --name $(DEPLOYMENT_NAME) --query properties.outputs --output json
 
-
-# ----------------------------------------------------------
-# Delete the entire resource group and all contained
-# resources to stop Azure charges.
-# ----------------------------------------------------------
 cleanup:
-	az group delete \
-		--name $(RESOURCE_GROUP) \
-		--yes \
-		--no-wait
+	az group delete --name $(RESOURCE_GROUP) --yes --no-wait
 
-
-# ----------------------------------------------------------
-# List all resource groups in the subscription.
-# ----------------------------------------------------------
-list:
-	az group list --output table
-
-
-# ----------------------------------------------------------
-# Show soft-deleted Cognitive Services accounts.
-# Azure keeps them for a retention period before permanent
-# removal.
-# ----------------------------------------------------------
-deleted:
-	az cognitiveservices account list-deleted \
-		--output table
-
-
-# ----------------------------------------------------------
-# Permanently purge the soft-deleted AI Foundry account.
-# Required if you want to immediately reuse the same name.
-# ----------------------------------------------------------
 purge:
-	az cognitiveservices account purge \
-		--location $(LOCATION) \
-		--resource-group $(RESOURCE_GROUP) \
-		--name $(AI_FOUNDRY_NAME)
-	az cognitiveservices account purge \
-	--location $(LOCATION) \
-	--resource-group $(RESOURCE_GROUP) \
-	--name fndry-generalagent-dev-content-safety
+	az cognitiveservices account purge --location $(LOCATION) --resource-group $(RESOURCE_GROUP) --name $(AI_FOUNDRY_NAME)
+	az cognitiveservices account purge --location $(LOCATION) --resource-group $(RESOURCE_GROUP) --name $(AI_FOUNDRY_NAME)-content-safety
