@@ -13,8 +13,8 @@ def require_database(database_path = DEFAULT_DATABASE_PATH):
             for table in ('customers', 'invoices', 'ticket_proposals', 'support_tickets'):
                 connection.execute(f'SELECT 1 FROM {table} LIMIT 1')
             connection.execute('SELECT proposal_id FROM support_tickets LIMIT 1')
-            if connection.execute("SELECT 1 FROM customers WHERE id = 'CUS-001'").fetchone() is None:
-                raise sqlite3.DatabaseError('Demo customer CUS-001 is missing.')
+            if connection.execute("SELECT 1 FROM customers LIMIT 1").fetchone() is None:
+                raise sqlite3.DatabaseError('No customer records are available.')
         finally:
             connection.close()
     except sqlite3.Error as error:

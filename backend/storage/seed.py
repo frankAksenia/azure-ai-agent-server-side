@@ -4,6 +4,7 @@ import sqlite3
 from pathlib import Path
 
 from storage.database import DEFAULT_DATABASE_PATH, connect, initialize_database
+from config.settings import get_database_path, load_environment
 
 
 DEFAULT_DATA_PATH = Path(__file__).with_name('synthetic_data.json')
@@ -52,9 +53,9 @@ def seed_database(database_path, data_path):
 
 
 def main():
-    
+    load_environment()
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--database', type=Path, default=DEFAULT_DATABASE_PATH)
+    parser.add_argument('--database', type=Path, default=get_database_path())
     parser.add_argument('--data', type=Path, default=DEFAULT_DATA_PATH, help='JSON dataset to populate (default: storage/synthetic_data.json).')
     args = parser.parse_args()
     try:
