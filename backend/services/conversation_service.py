@@ -1,19 +1,21 @@
-from agent_framework import AgentSession, InMemoryHistoryProvider, Message
+import asyncio
+
+from agent_framework import Message
+
+from storage.conversation_store import ConversationStore
 
 
 class ConversationService:
-    def __init__(self):
-        self.session = AgentSession()
-
-        self.history_provider = InMemoryHistoryProvider(
-            source_id="conversation_history",
-            load_messages=False,
-        )
+    def __init__(self, store: ConversationStore, conversation_id: str, customer_id: str):
+        self.store = store
+        self.conversation_id = conversation_id
+        self.customer_id = customer_id
 
     def get_history(self):
-        provider_state = self.session.state.get("conversation_history", {},)
-
-        return provider_state.get("messages", [])
+        return [
+            Message(role=row["role"], contents=[row["text"]])
+            for row in self.store.history(self.conversation_id, self.customer_id)
+        ]
 
     def build_task(self, user_input):
         history = self.get_history()
@@ -21,15 +23,7 @@ class ConversationService:
         if not history:
             return user_input
 
-        history_text = []
-
-        for message in history:
-            role = getattr(message, "role", "unknown")
-            text = getattr(message, "text", "")
-
-            history_text.append(f"{role}: {text}")
-
-        conversation = "\n".join(history_text)
+        conversation = "\n".join(f"{message.role}: {message.text}" for message in history)
 
         return (
             "Use the following previous conversation only as context "
@@ -43,19 +37,10 @@ class ConversationService:
         )
 
     async def add_turn(self, user_input, assistant_output):
-        provider_state = self.session.state.setdefault("conversation_history", {},)
-
-        messages = provider_state.setdefault("messages", [])
-
-        messages.extend(
-            [
-                Message(
-                    role="user",
-                    contents=user_input,
-                ),
-                Message(
-                    role="assistant",
-                    contents=assistant_output,
-                ),
-            ]
+        await asyncio.to_thread(
+            self.store.append_turn,
+            self.conversation_id,
+            self.customer_id,
+            user_input,
+            assistant_output,
         )

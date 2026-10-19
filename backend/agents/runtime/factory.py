@@ -1,3 +1,4 @@
+from contextlib import AsyncExitStack, asynccontextmanager
 from dataclasses import dataclass
 from storage.database import DEFAULT_DATABASE_PATH
 
@@ -17,30 +18,21 @@ class SpecialistAgents:
     manager_agent: FoundryAgent
 
 
-def create_agents(project_endpoint, credential, config, customer_id, session_id, database_path = DEFAULT_DATABASE_PATH):
-
-    return SpecialistAgents(
-        support_agent=create_support_agent(
-            project_endpoint,
-            credential,
-            config,
-        ),
-        billing_agent=create_billing_agent(
-            project_endpoint,
-            credential,
-            config,
-            customer_id=customer_id,
-            session_id=session_id,
-            database_path=database_path,
-        ),
-        technical_agent=create_technical_agent(
-            project_endpoint,
-            credential,
-            config,
-        ),
-        manager_agent=create_manager_agent(
-            project_endpoint,
-            credential,
-            config,
-        )
-    )
+@asynccontextmanager
+async def create_agents(project_endpoint, credential, config, customer_id, session_id, database_path=DEFAULT_DATABASE_PATH, *, retrieval_service):
+    async with AsyncExitStack() as resources:
+        manager = await resources.enter_async_context(create_manager_agent(
+            project_endpoint, credential, config,
+        ))
+        support = await resources.enter_async_context(create_support_agent(
+            project_endpoint, credential, config, retrieval_service=retrieval_service,
+        ))
+        billing = await resources.enter_async_context(create_billing_agent(
+            project_endpoint, credential, config,
+            customer_id=customer_id, session_id=session_id,
+            database_path=database_path, retrieval_service=retrieval_service,
+        ))
+        technical = await resources.enter_async_context(create_technical_agent(
+            project_endpoint, credential, config, retrieval_service=retrieval_service,
+        ))
+        yield SpecialistAgents(support, billing, technical, manager)

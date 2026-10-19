@@ -1,37 +1,35 @@
 from uuid import uuid4
 
 from services.conversation_service import ConversationService
+from storage.conversation_store import ConversationStore
+from storage.database import DEFAULT_DATABASE_PATH
 
 
 class ConversationManager:
-    def __init__(self):
+    def __init__(self, database_path=DEFAULT_DATABASE_PATH, max_history_turns: int = 20):
+        self.store = ConversationStore(database_path, max_history_turns)
 
-        self._conversations = {}
+    @staticmethod
+    def _validate_customer(customer_id):
+        if not isinstance(customer_id, str) or not customer_id.strip():
+            raise ValueError("Customer ID must not be empty.")
 
-    def create(self):
-
+    def create(self, customer_id):
+        self._validate_customer(customer_id)
         conversation_id = str(uuid4())
+        self.store.create(conversation_id, customer_id)
+        return conversation_id, ConversationService(self.store, conversation_id, customer_id)
 
-        conversation = ConversationService()
+    def get_conversation(self, conversation_id, customer_id):
+        self._validate_customer(customer_id)
+        self.store.require_owner(conversation_id, customer_id)
+        return ConversationService(self.store, conversation_id, customer_id)
 
-        self._conversations[conversation_id] = conversation
+    def get_or_create_conversation(self, conversation_id, customer_id):
+        if conversation_id is None:
+            return self.create(customer_id)
+        return conversation_id, self.get_conversation(conversation_id, customer_id)
 
-        return conversation_id, conversation
-
-    def get_conversation(self, conversation_id):
-
-        return self._conversations.get(conversation_id)
-
-    def get_or_create_conversation(self, conversation_id):
-
-        if conversation_id:
-            conversation = self.get_conversation(conversation_id)
-
-            if conversation:
-                return conversation_id, conversation
-
-        return self.create()
-
-    def delete_conversation(self, conversation_id):
-        
-        self._conversations.pop(conversation_id, None)
+    def delete_conversation(self, conversation_id, customer_id):
+        self._validate_customer(customer_id)
+        self.store.delete(conversation_id, customer_id)
